@@ -1,21 +1,18 @@
 from gui import GUI
-from board import Board
 
 class Game:
 
     def __init__(self):
         
-        self.board = Board()
-        self.gui = GUI(self.board)
+        self.gui = GUI()
     
     def run(self):
         
-        self.board.initialize()
+        self.gui.initialize()
         
         while True:
 
             self.gui.handle_events()
-            #self.board.update_game()
             self.gui.draw_board()
     
 

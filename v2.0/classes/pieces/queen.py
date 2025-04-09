@@ -1,10 +1,14 @@
 from piece import Piece
+from pieces.rook import Rook
+from pieces.bishop import Bishop
 
 class Queen(Piece):
     
+    name = "queen"
+    
     def __init__(self, team):
         
-        super().__init__("queen", team)
+        super().__init__(team)
     
     
     def __str__(self):
@@ -14,15 +18,38 @@ class Queen(Piece):
     
     def get_moves(self, board, pos):
         
-        moves = []
+        valid_moves = []
+        attack_moves = []
         
-        moves.extend(super().check_next_move(board, pos, (0, 1), -1))
-        moves.extend(super().check_next_move(board, pos, (1, 0), -1))
-        moves.extend(super().check_next_move(board, pos, (0, -1), -1))
-        moves.extend(super().check_next_move(board, pos, (-1, 0), -1))
-        moves.extend(super().check_next_move(board, pos, (1, 1), -1))
-        moves.extend(super().check_next_move(board, pos, (1, -1), -1))
-        moves.extend(super().check_next_move(board, pos, (-1, -1), -1))
-        moves.extend(super().check_next_move(board, pos, (-1, 1), -1))
+            
+        valid, attack = Rook.get_moves_static(board, pos, self.team)
+        valid_moves.extend(valid)
+        attack_moves.extend(attack)
+        valid, attack = Bishop.get_moves_static(board, pos, self.team)
+        valid_moves.extend(valid)
+        attack_moves.extend(attack)
         
-        return moves
+        return valid_moves, attack_moves
+    
+    @staticmethod
+    def get_moves_static(board, pos, team):
+        
+        valid_moves = []
+        attack_moves = []
+        
+            
+        valid, attack = Rook.get_moves_static(board, pos, team)
+        valid_moves.extend(valid)
+        attack_moves.extend(attack)
+        valid, attack = Bishop.get_moves_static(board, pos, team)
+        valid_moves.extend(valid)
+        attack_moves.extend(attack)
+        
+        return valid_moves, attack_moves
+    
+    @staticmethod
+    def get_attack_moves_static(board, pos, team):
+        
+        _, attack_moves = Queen.get_moves_static(board, pos, team)
+            
+        return attack_moves

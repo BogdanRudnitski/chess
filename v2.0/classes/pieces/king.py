@@ -2,28 +2,51 @@ from piece import Piece
 
 class King(Piece):
     
+    name = "king"
+    
     def __init__(self, team):
         
-        super().__init__("king", team)
+        super().__init__(team)
     
     
     def __str__(self):
         
         return super().__str__()
     
-    
+
     
     def get_moves(self, board, pos):
         
-        moves = []
+        valid_moves = []
+        attack_moves = []
         
-        moves.extend(super().check_next_move(board, pos, (0, 1), 1))
-        moves.extend(super().check_next_move(board, pos, (1, 0), 1))
-        moves.extend(super().check_next_move(board, pos, (0, -1), 1))
-        moves.extend(super().check_next_move(board, pos, (-1, 0), 1))
-        moves.extend(super().check_next_move(board, pos, (1, 1), 1))
-        moves.extend(super().check_next_move(board, pos, (1, -1), 1))
-        moves.extend(super().check_next_move(board, pos, (-1, -1), 1))
-        moves.extend(super().check_next_move(board, pos, (-1, 1), 1))
+        for direction in [(0, 1), (1, 0), (0, -1), (-1, 0),
+                          (1, 1), (1, -1), (-1, -1), (-1, 1)]:
+            
+            valid, attack = Piece.check_next_move(board, pos, direction, 1, self.team)
+            valid_moves.extend(valid)
+            attack_moves.append(attack)
         
-        return moves
+        return valid_moves, attack_moves
+    
+    @staticmethod
+    def get_moves_static(board, pos, team):
+        
+        valid_moves = []
+        attack_moves = []
+        
+        for direction in [(0, 1), (1, 0), (0, -1), (-1, 0),
+                          (1, 1), (1, -1), (-1, -1), (-1, 1)]:
+            
+            valid, attack = Piece.check_next_move(board, pos, direction, 1, team)
+            valid_moves.extend(valid)
+            attack_moves.append(attack)
+        
+        return valid_moves, attack_moves
+    
+    @staticmethod
+    def get_attack_moves_static(board, pos, team):
+        
+        _, attack_moves = King.get_moves_static(board, pos, team)
+        
+        return attack_moves

@@ -18,3 +18,26 @@ class Tile:
 
     def is_empty(self):
         return self.piece == None
+    
+    def has_piece(self):
+        return not self.is_empty()
+    
+    def get_piece(self):
+        if self.piece:
+            return self.piece
+        return None
+    
+    def get_team(self):
+        if self.piece:
+            return self.piece.get_team()
+        return None
+        
+    def get_image(self):
+        if self.piece:
+            return self.piece.get_image()
+        return None
+    
+    def get_piece_type(self):
+        if self.piece:
+            return self.piece.name
+        return None
